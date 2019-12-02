@@ -2,6 +2,11 @@ from bottle import route, run, get, post, request
 import mongodb
 import sentiment
 import recommend
+import os
+import dotenv
+dotenv.load_dotenv()
+import nltk
+nltk.download('vader_lexicon')
 
 database = 'API_Project'
 db, users = mongodb.connectCollection(database, 'users')
@@ -89,10 +94,6 @@ def addMember(chat, tipo):
         author_id = request.forms.get('author_id')
         markdown = request.forms.get('markdown')
         return mongodb.addMessage(author_id,chat,markdown,coll,chat_coll)
-
-@error(404)
-def error404(error):
-    return {'error': 'oops'}
 
 
 port = int(os.getenv("PORT", 8080))
