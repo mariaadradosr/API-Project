@@ -30,7 +30,7 @@ You have to create an api with all this endpoints:
   - **Purpose:** Create a user and save into DB
   - **Params:** `username` the user name
   - **Returns:** `user_id`
-- (GET) `/user/<user_id>/recommend`  
+- (GET) `/user/<user_id>/recommend`  span style="color:red">-----> **D O N E** </span>
   - **Purpose:** Recommend friend to this user based on chat contents
   - **Returns:** json array with top 3 similar users
 

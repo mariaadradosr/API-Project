@@ -37,6 +37,26 @@ def getUserRecommendation(user_id):
     users_coll = users
     return recommend.getUserRecommendation(user_id, coll, users_coll)     
 
+@get('/create/user')
+def insert_name():
+    return '''<form method="GET" action="/create/user">
+                <input type="submit" />
+              </form>'''
+
+@get('/create/user')
+def insert_name():
+    return '''<form method="POST" action="/create/user">
+                Insert a new name: <input name="name"     type="text" />
+                <input type="submit" />
+              </form>'''
+
+@get('/create/chat')
+def insert_name():
+    return '''<form method="POST" action="/create/chat">
+                <input type="submit" />
+              </form>'''
+
+
 @post('/create/<tipo>')
 def create(tipo):
     if tipo == 'user':

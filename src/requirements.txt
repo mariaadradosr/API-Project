@@ -1,1 +1,16 @@
-bottle
+bottle==0.12.17
+bs4==0.0.1
+certifi==2019.11.28
+matplotlib==3.1.1
+nltk==3.4.5
+numpy==1.17.3
+pandas==0.25.2
+pymongo==3.9.0
+pymongo[tls,srv]
+dnspython==1.16.0
+python-dateutil==2.8.0
+python-dotenv==0.10.3
+requests==2.22.0
+scipy
+scikit-learn
+sklearn

@@ -5,6 +5,7 @@ import numpy as np
 import scipy.stats as stats
 import pandas as pd
 
+
 def getChatSentiment(chat, coll, coll_messages):
     sid = SentimentIntensityAnalyzer()
     m = coll_messages.find({'chat_id':chat})

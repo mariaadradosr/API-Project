@@ -7,14 +7,15 @@ import config
 import os
 import requests
 from bson import ObjectId
+import dotenv
+dotenv.load_dotenv()
 
 #Connect to DB
 
-#password = os.getenv('AtlasPassword')
-#connection ='mongodb+srv://mariaadradosr:{}@clustermaria-on6tt.mongodb.net/test?ssl=true&ssl_cert_reqs=CERT_NONE'.format(password)
 
-
-connection=os.getenv("MONGODB_URL")
+#connection=os.getenv("MONGODB_URL")
+connection=os.getenv("ATLAS_URL")
+print(connection)
 client = MongoClient(connection)
 
 def connectCollection(database, collection):
