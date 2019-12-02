@@ -15,7 +15,7 @@ dotenv.load_dotenv()
 
 #connection=os.getenv("MONGODB_URL")
 connection=os.getenv("ATLAS_URL")
-print(connection)
+
 client = MongoClient(connection)
 
 def connectCollection(database, collection):
