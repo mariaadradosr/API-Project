@@ -15,7 +15,6 @@ dotenv.load_dotenv()
 
 #connection=os.getenv("MONGODB_URL")
 connection=os.getenv("ATLAS_URL")
-
 client = MongoClient(connection)
 
 def connectCollection(database, collection):
@@ -46,33 +45,36 @@ def addChat(coll):
     document = {'members':[]}
     return addDocument(document, coll)
     
-def addMember(member_id, chat,coll):
-    if member_id not in list(coll.find({'_id':ObjectId(chat)}))[0]['members']:
-        filtro = {'_id':ObjectId(chat)}
+def addMember(member_id, chat_id,coll,user_coll):
+    if member_id not in list(coll.find({'_id':ObjectId(chat_id)}))[0]['members'] and member_id in list(user_coll.find({})):
+        filtro = {'_id':ObjectId(chat_id)}
         field = 'members'
         value = {'$push':{field:member_id}}
         coll.update_one(filtro, value) 
-        return f'{member_id} has been added to chat {chat}'
+        return f'{member_id} has been added to chat {chat_id}'
     else: 
-        return f'ERROR: {member_id} is already a member of chat {chat}'
+        if member_id in list(coll.find({'_id':ObjectId(chat_id)}))[0]['members']:
+            return f'ERROR: {member_id} is already a member of chat {chat_id}'
+        elif member_id not in list(user_coll.find({})):
+            return f'ERROR: {member_id} is not a registered user'
 
-def addMessage(author_id,chat,markdown,coll,chat_coll):
-    if author_id in list(chat_coll.find({'_id':ObjectId(chat)}))[0]['members']:
+def addMessage(author_id,chat_id,markdown,coll,chat_coll):
+    if author_id in list(chat_coll.find({'_id':ObjectId(chat_id)}))[0]['members']:
         document = {
             'author_id': author_id,
-            'chat_id': chat,
+            'chat_id': chat_id,
             'markdown': markdown
         }
         addDocument(document, coll)
-        return f'Message has been added to chat {chat}'
+        return f'Message has been added to chat {chat_id}'
     else:
-        return f'{author_id} is not a member of chat {chat}'
+        return f'{author_id} is not a member of chat {chat_id}'
 
 def getMembers(chat, coll, users_coll):
-    names = []
+    names = {}
     try:
         for e in list(coll.find({'_id':ObjectId(chat)}))[0]['members']:
-            names.append(list(users_coll.find({'_id':ObjectId(e)}))[0]['name'])
+            names[e]=list(users_coll.find({'_id':ObjectId(e)}))[0]['name']
         return names
     except:
         return f'There is no member in chat {chat} yet'
