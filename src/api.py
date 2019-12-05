@@ -122,7 +122,7 @@ def addMember(tipo):
         chat_id = request.forms.get('chat_id')
         author_id = request.forms.get('author_id')
         markdown = request.forms.get('markdown')
-        return mongodb.addMessage(author_id, chat_id, markdown, coll, chat_coll)
+        return mongodb.addMessage(author_id,chat_id,markdown,coll,chat_coll,user_coll)
 
 
 port = int(os.getenv("PORT", 8080))
