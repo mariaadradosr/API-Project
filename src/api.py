@@ -20,7 +20,6 @@ def index():
         'Welcome to my API! :) '
     }
 
-
 @get('/chat')
 def getAllChats():
     coll = chats
@@ -28,6 +27,12 @@ def getAllChats():
         str(list(coll.find({})))
     }
 
+@get('/users')
+def getAllUsers():
+    coll = users
+    return {
+        str(list(coll.find({})))
+    }
 
 @get('/chat/<tipo>/<chat>')
 def getFromChat(chat, tipo):
@@ -53,6 +58,18 @@ def getUserRecommendation(user_id):
     users_coll = users
     return recommend.getUserRecommendation(user_id, coll, users_coll)
 
+@get('/create/<tipo>')
+def getCreate(tipo):
+    if tipo == 'user':
+        return '''<form method="POST" action="/create/user">
+                    Insert a new name: <input name="name"     type="text" />
+                    <input type="submit" />
+                </form>'''
+    elif tipo == 'chat':
+        return '''<form method="POST" action="/create/chat">
+                    <input type="submit" />
+                </form>'''
+
 
 @post('/create/<tipo>')
 def create(tipo):
@@ -72,6 +89,21 @@ def create(tipo):
             'inserted_doc': str(mongodb.addChat(coll))
         }
 
+@get('/chat/<tipo>')
+def getaddtoChat(tipo):
+    if tipo == 'addMember':
+        return '''<form method="POST" action="/tochat/addMember">
+                    Insert a chat_id: <input name="chat_id"     type="text" />
+                    Insert a member_id: <input name="member_id"     type="text" />
+                     <input type="submit" />
+                     </form>'''
+    elif tipo == 'addMessage':
+        return '''<form method="POST" action="/tochat/addMessage">
+                    chat_id: <input name="chat_id"     type="text" />
+                    author_id: <input name="author_id" type="text" />
+                    markdown: <input markdown="markdown" type="text" />
+                    <input type="submit" />
+                </form>'''
 
 @post('/chat/<tipo>')
 def addMember(tipo):
@@ -83,6 +115,7 @@ def addMember(tipo):
         user_coll = users
         return mongodb.addMember(member_id, chat_id, coll, user_coll)
     elif tipo == 'addMessage':
+        user_coll = users
         coll = messages
         chat_coll = chats
         print(dict(request.forms))

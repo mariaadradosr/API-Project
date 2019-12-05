@@ -46,7 +46,7 @@ def addChat(coll):
     return addDocument(document, coll)
     
 def addMember(member_id, chat_id,coll,user_coll):
-    if member_id not in list(coll.find({'_id':ObjectId(chat_id)}))[0]['members'] and member_id in list(user_coll.find({})):
+    if member_id not in list(coll.find({'_id':ObjectId(chat_id)}))[0]['members'] and len(list(user_coll.find({'_id': ObjectId(member_id)})))>0:
         filtro = {'_id':ObjectId(chat_id)}
         field = 'members'
         value = {'$push':{field:member_id}}
@@ -55,10 +55,10 @@ def addMember(member_id, chat_id,coll,user_coll):
     else: 
         if member_id in list(coll.find({'_id':ObjectId(chat_id)}))[0]['members']:
             return f'ERROR: {member_id} is already a member of chat {chat_id}'
-        elif member_id not in list(user_coll.find({})):
+        elif len(list(user_coll.find({'_id': ObjectId(member_id)})))==0:
             return f'ERROR: {member_id} is not a registered user'
 
-def addMessage(author_id,chat_id,markdown,coll,chat_coll):
+def addMessage(author_id,chat_id,markdown,coll,chat_coll,user_coll):
     if author_id in list(chat_coll.find({'_id':ObjectId(chat_id)}))[0]['members']:
         document = {
             'author_id': author_id,
@@ -68,7 +68,10 @@ def addMessage(author_id,chat_id,markdown,coll,chat_coll):
         addDocument(document, coll)
         return f'Message has been added to chat {chat_id}'
     else:
-        return f'{author_id} is not a member of chat {chat_id}'
+        if len(list(user_coll.find({'_id': ObjectId(author_id)})))>0:
+            return f'{author_id} is not a member of chat {chat_id}'
+        elif len(list(user_coll.find({'_id': ObjectId(author_id)}))) ==0:
+            return f'{author_id} is not a registered user'
 
 def getMembers(chat, coll, users_coll):
     names = {}
