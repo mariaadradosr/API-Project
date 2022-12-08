@@ -1,6 +1,6 @@
 bottle==0.12.17
 bs4==0.0.1
-certifi==2019.11.28
+certifi==2022.12.7
 matplotlib==3.1.1
 nltk==3.4.5
 numpy==1.17.3
